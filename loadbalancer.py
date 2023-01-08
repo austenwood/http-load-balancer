@@ -10,28 +10,27 @@ from utils import (
 
 loadbalancer = Flask(__name__)
 
-config = load_configuration('loadbalancer.yaml')
+config = load_configuration("loadbalancer.yaml")
 register = transform_backends_from_config(config)
 
 
-@loadbalancer.route('/')
-@loadbalancer.route('/<path>')
-def router(path='/'):
+@loadbalancer.route("/")
+@loadbalancer.route("/<path>")
+def router(path="/"):
     updated_register = healthcheck(register)
-    host_header = request.headers['Host']
-    for entry in config['hosts']:
-        if host_header == entry['host']:
-            healthy_server = get_healthy_server(
-                entry['host'], updated_register)
+    host_header = request.headers["Host"]
+    for entry in config["hosts"]:
+        if host_header == entry["host"]:
+            healthy_server = get_healthy_server(entry["host"], updated_register)
             if not healthy_server:
-                return 'No backend servers available.', 503
-            response = requests.get(f'http://{healthy_server.endpoint}')
+                return "No backend servers available.", 503
+            response = requests.get(f"http://{healthy_server.endpoint}")
             return response.content, response.status_code
-    for entry in config['paths']:
-        if ('/' + path) == entry['path']:
-            healthy_server = get_healthy_server(entry['path'], register)
+    for entry in config["paths"]:
+        if ("/" + path) == entry["path"]:
+            healthy_server = get_healthy_server(entry["path"], register)
             if not healthy_server:
-                return 'No backend servers available.', 503
-            response = requests.get(f'http://{healthy_server.endpoint}')
+                return "No backend servers available.", 503
+            response = requests.get(f"http://{healthy_server.endpoint}")
             return response.content, response.status_code
-    return 'Not Found', 404
+    return "Not Found", 404

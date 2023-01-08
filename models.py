@@ -2,17 +2,18 @@ import requests
 
 
 class Server:
-    def __init__(self, endpoint, path='/healthcheck'):
+    def __init__(self, endpoint, path="/healthcheck"):
         self.endpoint = endpoint
         self.path = path
         self.healthy = True
         self.timeout = 1
-        self.scheme = 'http://'
+        self.scheme = "http://"
 
     def healthcheck_and_update_status(self):
         try:
             response = requests.get(
-                self.scheme + self.endpoint + self.path, timeout=self.timeout)
+                self.scheme + self.endpoint + self.path, timeout=self.timeout
+            )
             if response.ok:
                 self.healthy = True
             else:
@@ -26,4 +27,4 @@ class Server:
         return False
 
     def __repr__(self):
-        return f'<Server: {self.endpoint} {self.healthy} {self.timeout}>'
+        return f"<Server: {self.endpoint} {self.healthy} {self.timeout}>"

@@ -5,7 +5,7 @@ from flask import Flask, jsonify, request
 app = Flask(__name__)
 
 
-@app.route('/')
+@app.route("/")
 def sample():
     return jsonify(
         message=f'This is the {os.environ["APP"]} application.',
@@ -13,10 +13,10 @@ def sample():
     )
 
 
-@app.route('/healthcheck')
+@app.route("/healthcheck")
 def healthcheck():
-    return 'OK'
+    return "OK"
 
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+if __name__ == "__main__":
+    app.run(host="0.0.0.0")
